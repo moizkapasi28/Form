@@ -31,44 +31,42 @@ class Data {
         }
     }
 }
-btnSubmit.addEventListener('click', (event) => {
-    event.preventDefault();
-    if (validateForm()) {
-        const data = new Data(fullname.value, email.value, contact.value, address.value, password.value);
-        form.reset();
-        display(mainData);
-    }
-})
-
 function validateForm() {
     let returnVal = true;
     var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    var num = /^(\d{3})[- ]?(\d{3})[- ]?(\d{4})$/
+    var num = /^(\d{3})[- ]?(\d{3})[- ]?(\d{4})$/;
     if (fullname.value == "") {
         document.getElementsByClassName('formerror')[0].innerHTML = "*Name is Empty"
         returnVal = false;
-    } else if (fullname.value.length < 5) {
+    }
+    else if (fullname.value.length < 5) {
         document.getElementsByClassName('formerror')[0].innerHTML = "*Name is too Short"
         returnVal = false;
     }
-    if (email.value.match(mailFormat)) {
-        returnVal = true
-    } else {
+    if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)){
         document.getElementsByClassName('formerror')[1].innerHTML = "*Invalid Email"
-        returnVal = false
+        returnVal=false;
     }
-    if (num.test(contact.value)) {
-        returnVal = true
-    } else {
+    if(!/^(\d{3})[- ]?(\d{3})[- ]?(\d{4})$/.test(contact.value)){
         document.getElementsByClassName('formerror')[2].innerHTML = "*Invalid Number"
-        returnVal = false;
+        returnVal=false;
     }
     if (password.value.length < 8 || password.value.length > 15) {
-        document.getElementsByClassName('formerror')[4].innerHTML = "*Invalid Password"
+        document.getElementsByClassName('formerror')[4].innerHTML = "*Password should be grater than 8 letters"
         returnVal = false
     }
     return returnVal
 }
+btnSubmit.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (validateForm()){
+        const data = new Data(fullname.value, email.value, contact.value, address.value, password.value);
+        form.reset();
+        console.log('Hello')
+        console.log(mainData)
+        display(mainData);
+    }
+})
 
 function editData(id) {
 
@@ -88,7 +86,7 @@ function editData(id) {
 }
 
 function updateRecord(index) {
-    if (validateForm()) {
+    if(validateForm()){
         let user = {
             fullname: fullname.value,
             email: email.value,
@@ -103,7 +101,9 @@ function updateRecord(index) {
         btnSubmit.style.display = "block"
         btnEdit.style.display = "none"
     }
-}
+        
+    }
+
 
 function deleteData(id) {
     let confirmation = confirm('Are you Sure You want to Delete');
